@@ -5,7 +5,7 @@ export interface RegisterCredentials {
   avatar: string | null;
 }
 
-export interface c {
+export interface LoginCredentials {
   email: string;
   password: string;
 }
