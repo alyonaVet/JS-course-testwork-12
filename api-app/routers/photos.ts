@@ -11,7 +11,11 @@ const photosRouter = express.Router();
 
 photosRouter.get('/',  async(req, res, next) => {
   try {
-    const photos = await Photo.find().populate('user', 'displayName' );
+    const authorId = req.query.authorId;
+
+    const authorFilter = authorId ? {user: authorId} : {};
+
+    const photos = await Photo.find(authorFilter).populate('user', 'displayName' );
     return res.send(photos);
   } catch (error) {
     return next(error);
