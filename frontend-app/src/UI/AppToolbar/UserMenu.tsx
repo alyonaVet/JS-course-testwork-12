@@ -2,7 +2,7 @@ import {Avatar, Box, Button, Menu, MenuItem} from '@mui/material';
 import {User} from '../../types';
 import React, {useState} from 'react';
 import PersonIcon from '@mui/icons-material/Person';
-import {useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {useAppDispatch} from '../../app/hooks';
 import {logout} from '../../features/users/usersThunk';
 import {apiURL} from '../../constants';
@@ -44,6 +44,8 @@ const UserMenu: React.FC<Props> = ({user}) => {
         {user.displayName}
       </Button>
       <Menu anchorEl={anchorEl} open={isOpen} keepMounted onClose={handleClose}>
+        <MenuItem component={Link} to="/photos/add-photo">Add photo</MenuItem>
+        <MenuItem component={Link} to="/photos/my-photos">My photos</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </Box>
