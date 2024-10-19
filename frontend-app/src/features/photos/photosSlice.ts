@@ -1,17 +1,21 @@
 import {Photo} from '../../types';
 import {createSlice} from '@reduxjs/toolkit';
-import {addPhoto, fetchPhotos} from './photosThunk';
+import {addPhoto, fetchOneUserPhotos, fetchPhotos} from './photosThunk';
 
 export interface PhotosState {
   photos: Photo[];
   photosFetching: boolean;
   photoCreating: boolean;
+  oneUserPhotos: Photo[],
+  isFetching: boolean,
 }
 
 const initialState: PhotosState = {
   photos: [],
   photosFetching: false,
   photoCreating: false,
+  oneUserPhotos: [],
+  isFetching: false,
 };
 
 export const photosSlice = createSlice({
@@ -40,11 +44,24 @@ export const photosSlice = createSlice({
       .addCase(addPhoto.rejected, (state) => {
         state.photoCreating = false;
       });
+    builder
+      .addCase(fetchOneUserPhotos.pending, (state) => {
+        state.isFetching = true;
+      })
+      .addCase(fetchOneUserPhotos.fulfilled, (state, {payload: photos}) => {
+        state.isFetching = false;
+        state.oneUserPhotos = photos;
+      })
+      .addCase(fetchOneUserPhotos.rejected, (state) => {
+        state.isFetching = false;
+      });
   },
   selectors: {
     selectPhotos: (state) => state.photos,
     selectPhotosFetching: (state) => state.photosFetching,
     selectPhotoCreating: (state) => state.photoCreating,
+    selectOneUserPhotos: (state) => state.oneUserPhotos,
+    selectIsFetching: (state) => state.isFetching,
   }
 });
 
@@ -53,5 +70,7 @@ export const photosReducer = photosSlice.reducer;
 export const {
   selectPhotos,
   selectPhotosFetching,
-  selectPhotoCreating
+  selectPhotoCreating,
+  selectOneUserPhotos,
+  selectIsFetching,
 } = photosSlice.selectors
