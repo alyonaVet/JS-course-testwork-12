@@ -5,12 +5,13 @@ import {imagesUpload} from '../multer';
 import auth, {RequestWithUser} from '../middleware/auth';
 import {PhotoFields} from '../types';
 import permit from '../middleware/permit';
+import checkUser from '../middleware/checkUser';
 
 const photosRouter = express.Router();
 
 photosRouter.get('/',  async(req, res, next) => {
   try {
-    const photos = await Photo.find();
+    const photos = await Photo.find().populate('user', 'displayName' );
     return res.send(photos);
   } catch (error) {
     return next(error);
@@ -43,6 +44,19 @@ photosRouter.post('', auth, imagesUpload.single('image'),  async(req: RequestWit
       }
       return next(error);
     }
+});
+
+photosRouter.get('/my-photos', checkUser, async (req: RequestWithUser, res, next) => {
+  try {
+    if (!req.user) {
+      return res.status(401).send({ error: 'User not found' });
+    }
+    const userPhotos = await Photo.find({ user: req.user._id });
+
+    return res.send(userPhotos);
+  } catch (error) {
+    return next(error);
+  }
 });
 
 photosRouter.get('/:id', async (req, res, next) => {
