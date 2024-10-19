@@ -4,6 +4,7 @@ import Photo from '../models/Photo';
 import {imagesUpload} from '../multer';
 import auth, {RequestWithUser} from '../middleware/auth';
 import {PhotoFields} from '../types';
+import permit from '../middleware/permit';
 
 const photosRouter = express.Router();
 
@@ -61,5 +62,34 @@ photosRouter.get('/:id', async (req, res, next) => {
     return next(error);
   }
 });
+
+photosRouter.delete('/:id', auth, permit('admin', 'user'), async (req: RequestWithUser, res, next) => {
+  try {
+    if (!req.user) {
+      return res.status(401).send({error: 'User not found'});
+    }
+
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(400).send({ error: 'Photo ID is not valid' });
+    }
+
+    const photo = await Photo.findById(req.params.id);
+
+    if (!photo) {
+      return res.status(404).send({ error: 'Photo not found' });
+    }
+
+    if (req.user.role !== 'admin' && photo.user.toString() !== req.user._id.toString()) {
+      return res.status(403).send({ error: 'You can not delete this photo' });
+    }
+
+    await Photo.findByIdAndDelete(req.params.id);
+
+    return res.send({ message: 'Photo was deleted successfully.' });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 
 export default photosRouter;
