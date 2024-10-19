@@ -9,6 +9,7 @@ import ProtectedRoute from './UI/ProtectedRoute/ProtectedRoute';
 import {useAppSelector} from './app/hooks';
 import {selectUser} from './features/users/usersSlice';
 import AddPhoto from './features/photos/AddPhoto';
+import OneUserPhotos from './features/photos/OneUserPhotos';
 
 const App = () => {
   const user = useAppSelector(selectUser);
@@ -25,6 +26,7 @@ const App = () => {
             <AddPhoto/>
           </ProtectedRoute>
         }/>
+        <Route path="/photos/my-photos" element={<OneUserPhotos />}/>
         <Route path="/register" element={<Register/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="*" element={<NotFoundPage/>}/>
