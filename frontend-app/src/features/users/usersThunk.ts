@@ -69,9 +69,22 @@ export const googleLogin = createAsyncThunk<User, string, { rejectValue: GlobalE
   },
 );
 
+const anonAuthor = {
+  '_id': '',
+  'email': '',
+  'token': '',
+  'role': '',
+  'displayName': '',
+  'avatar': '',
+  '__v': 0
+};
+
 export const getUser = createAsyncThunk<User, string | undefined>(
   'users/getUser',
   async (id) => {
+    if (!id) {
+      return anonAuthor;
+    }
     const {data: user} = await axiosApi.get(`/users/${id}`);
     return user;
   }
