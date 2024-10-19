@@ -30,7 +30,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
     navigate('/');
   };
 
-  const avatar = user.avatar?.includes('http') ? user.avatar : `${apiURL}/${user.avatar || ''}`;
+  const avatar = user.avatar?.includes('https') ? user.avatar : `${apiURL}/${user.avatar || ''}`;
 
   return (
     <Box display="flex" alignItems="center">
