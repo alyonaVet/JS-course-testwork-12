@@ -42,7 +42,6 @@ const OneUserPhotos = () => {
               username={photo.user.displayName}
               title={photo.title}
               image={photo.image}
-              onClick={() => null}
               user={user}
               onDelete={() => handleDelete(photo._id)}
               isDeleting={photoDeleting}
