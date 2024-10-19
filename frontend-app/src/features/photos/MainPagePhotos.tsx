@@ -31,7 +31,7 @@ const MainPagePhotos = () => {
     <Box sx={{m: 4}}>
       {!authorId ? (
         <Typography variant="h4" component="h1" gutterBottom textAlign="center">
-          Users Photos
+          All User Photos
         </Typography>
       ) : (
         <Typography variant="h4" component="h1" gutterBottom textAlign="center">
