@@ -124,12 +124,8 @@ const PhotoCard: React.FC<Props> = ({
         >
           <CloseIcon/>
         </IconButton>
-        <DialogContent dividers>
-          <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-            consectetur ac, vestibulum at eros.
-          </Typography>
+        <DialogContent>
+          <img src={cardImage} alt={title}  style={{ width: "80vh" }} />
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose}>
