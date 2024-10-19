@@ -13,7 +13,7 @@ const AppToolbar = () => {
         <Toolbar sx={{justifyContent: 'space-between'}}>
           <NavLink to="/" style={{textDecoration: 'none', color: 'inherit'}}>
             <Typography variant="h6">
-              App
+              Photo Gallery
             </Typography>
           </NavLink>
           {user ? (
