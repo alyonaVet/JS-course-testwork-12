@@ -1,15 +1,30 @@
 import React from 'react';
-import {Box, Card, CardActionArea, CardContent, CardMedia, styled, Typography} from '@mui/material';
+import {Box, Button, Card, CardActionArea, CardContent, CardMedia, Stack, styled, Typography} from '@mui/material';
 import {apiURL} from '../../../constants';
+import {User} from '../../../types';
 
 interface Props {
-  username: string
+  id: string;
+  user: User | null;
+  authorId: string;
+  username: string;
   title: string;
   image: string | null;
   onClick: () => void;
+  onDelete: () => void;
+  isDeleting: boolean;
 }
 
-const PhotoCard: React.FC<Props> = ({username, title, image, onClick}) => {
+const PhotoCard: React.FC<Props> = ({
+                                      user,
+                                      authorId,
+                                      username,
+                                      title,
+                                      image,
+                                      onClick,
+                                      onDelete,
+                                      isDeleting
+                                    }) => {
   const ImageCardMedia = styled(CardMedia)({
     height: 0,
     paddingTop: '100%',
@@ -20,8 +35,14 @@ const PhotoCard: React.FC<Props> = ({username, title, image, onClick}) => {
 
   return (
     <Box sx={{mt: 3}}>
+      {user && (user.role === 'admin' || user._id === authorId) &&
+        (<Stack direction="row" justifyContent="space-between" mb={2}>
+            <Button type="submit" variant="outlined" color="error" sx={{mr: 1}} onClick={onDelete}
+                    disabled={isDeleting}>Delete</Button>
+          </Stack>
+        )}
       <Card sx={{
-        width: 200,
+        width: 250,
         m: 1,
         '&:hover': {
           boxShadow: 6,
