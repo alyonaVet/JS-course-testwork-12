@@ -1,7 +1,8 @@
 import React from 'react';
-import {Box, Button, Card, CardActionArea, CardContent, CardMedia, Stack, styled, Typography} from '@mui/material';
+import {Box, Card, CardActionArea, CardContent, CardMedia, Stack, styled, Typography} from '@mui/material';
 import {apiURL} from '../../../constants';
 import {User} from '../../../types';
+import {LoadingButton} from '@mui/lab';
 
 interface Props {
   id: string;
@@ -37,8 +38,17 @@ const PhotoCard: React.FC<Props> = ({
     <Box sx={{mt: 3}}>
       {user && (user.role === 'admin' || user._id === authorId) &&
         (<Stack direction="row" justifyContent="space-between" mb={2}>
-            <Button type="submit" variant="outlined" color="error" sx={{mr: 1}} onClick={onDelete}
-                    disabled={isDeleting}>Delete</Button>
+            <LoadingButton
+              type="submit"
+              disabled={isDeleting}
+              loadingPosition="center"
+              variant="outlined"
+              color="error"
+              sx={{mr: 1}}
+              onClick={onDelete}
+            >
+              <span>Delete</span>
+            </LoadingButton>
           </Stack>
         )}
       <Card sx={{
