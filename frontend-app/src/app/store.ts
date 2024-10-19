@@ -2,6 +2,7 @@ import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage';
 import {usersReducer} from '../features/users/usersSlice';
 import {persistReducer, FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistStore} from 'redux-persist';
+import {photosReducer} from '../features/photos/photosSlice';
 
 
 const usersPersistConfig = {
@@ -12,6 +13,7 @@ const usersPersistConfig = {
 
 const rootReducer = combineReducers({
   users: persistReducer(usersPersistConfig, usersReducer),
+  photos: photosReducer,
 });
 
 export const store = configureStore({
