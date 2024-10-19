@@ -44,4 +44,22 @@ photosRouter.post('', auth, imagesUpload.single('image'),  async(req: RequestWit
     }
 });
 
+photosRouter.get('/:id', async (req, res, next) => {
+  try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(400).send({error: 'Photo ID is not valid'});
+    }
+    const photo = await Photo.findById(req.params.id);
+
+    if (photo === null) {
+      return res.status(404).send({error: 'Photo not found'});
+    }
+
+    return res.send(photo);
+
+  } catch (error) {
+    return next(error);
+  }
+});
+
 export default photosRouter;
