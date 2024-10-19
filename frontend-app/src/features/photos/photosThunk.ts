@@ -34,3 +34,11 @@ export const addPhoto = createAsyncThunk<void, PhotoFields, { rejectValue: Globa
     }
   }
 );
+
+export const fetchOneUserPhotos = createAsyncThunk<Photo[]>(
+  'photos/fetchOneUserPhotos',
+  async () => {
+    const {data: userPhotos} = await axiosApi.get<Photo[]>('photos/my-photos');
+    return userPhotos;
+  }
+);
