@@ -22,7 +22,7 @@ photosRouter.get('/',  async(req, res, next) => {
   }
 });
 
-photosRouter.post('', auth, imagesUpload.single('image'),  async(req: RequestWithUser, res, next) => {
+photosRouter.post('/', auth, imagesUpload.single('image'),  async(req: RequestWithUser, res, next) => {
     try {
       if (!req.user) {
         return res.status(401).send({error: 'User not found'});
@@ -58,24 +58,6 @@ photosRouter.get('/my-photos', checkUser, async (req: RequestWithUser, res, next
     const userPhotos = await Photo.find({ user: req.user._id }).populate('user', 'displayName' );
 
     return res.send(userPhotos);
-  } catch (error) {
-    return next(error);
-  }
-});
-
-photosRouter.get('/:id', async (req, res, next) => {
-  try {
-    if (!mongoose.isValidObjectId(req.params.id)) {
-      return res.status(400).send({error: 'Photo ID is not valid'});
-    }
-    const photo = await Photo.findById(req.params.id);
-
-    if (photo === null) {
-      return res.status(404).send({error: 'Photo not found'});
-    }
-
-    return res.send(photo);
-
   } catch (error) {
     return next(error);
   }
