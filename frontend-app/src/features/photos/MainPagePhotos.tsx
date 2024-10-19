@@ -4,7 +4,9 @@ import {selectIsDeleting, selectPhotos, selectPhotosFetching} from './photosSlic
 import PhotoCard from './components/PhotoCard';
 import {useEffect} from 'react';
 import {deletePhoto, fetchPhotos} from './photosThunk';
-import {selectUser} from '../users/usersSlice';
+import {selectGettingUser, selectUser} from '../users/usersSlice';
+import {useParams} from 'react-router-dom';
+import {getUser} from '../users/usersThunk';
 
 const MainPagePhotos = () => {
   const dispatch = useAppDispatch();
@@ -12,10 +14,14 @@ const MainPagePhotos = () => {
   const photos = useAppSelector(selectPhotos);
   const photosFetching = useAppSelector(selectPhotosFetching);
   const photoDeleting = useAppSelector(selectIsDeleting);
+  const authorUser = useAppSelector(selectGettingUser);
+
+  const {authorId} = useParams();
 
   useEffect(() => {
-    dispatch(fetchPhotos());
-  }, [dispatch]);
+    dispatch(fetchPhotos(authorId));
+    dispatch(getUser(authorId));
+  }, [dispatch, authorId]);
 
   const handleDelete = async (id: string) => {
     await dispatch(deletePhoto(id));
@@ -23,9 +29,15 @@ const MainPagePhotos = () => {
 
   return (
     <Box sx={{m: 4}}>
-      <Typography variant="h4" component="h1" gutterBottom textAlign="center">
-        Users Photos
-      </Typography>
+      {!authorId ? (
+        <Typography variant="h4" component="h1" gutterBottom textAlign="center">
+          Users Photos
+        </Typography>
+      ) : (
+        <Typography variant="h4" component="h1" gutterBottom textAlign="center">
+          {authorUser?.displayName}'s gallery
+        </Typography>
+      )}
       {photosFetching ? (
         <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh'}}>
           <CircularProgress/>
@@ -36,7 +48,7 @@ const MainPagePhotos = () => {
             <PhotoCard
               key={photo._id}
               id={photo._id}
-              authorId={photo.user._id}
+              photoAuthorId={photo.user._id}
               username={photo.user.displayName}
               title={photo.title}
               image={photo.image}
