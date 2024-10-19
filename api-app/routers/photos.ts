@@ -51,7 +51,7 @@ photosRouter.get('/my-photos', checkUser, async (req: RequestWithUser, res, next
     if (!req.user) {
       return res.status(401).send({ error: 'User not found' });
     }
-    const userPhotos = await Photo.find({ user: req.user._id });
+    const userPhotos = await Photo.find({ user: req.user._id }).populate('user', 'displayName' );
 
     return res.send(userPhotos);
   } catch (error) {
