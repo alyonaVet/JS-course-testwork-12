@@ -31,7 +31,7 @@ const MainPagePhotos = () => {
           <CircularProgress/>
         </Box>
       ) : (
-        <Stack direction={'row'} alignItems={'center'} justifyContent={'center'} flexWrap={'wrap'} gap={3}>
+        <Stack direction={'row'} alignItems={'end'} justifyContent={'center'} flexWrap={'wrap'} gap={3}>
           {photos.map((photo) => (
             <PhotoCard
               key={photo._id}
@@ -40,7 +40,6 @@ const MainPagePhotos = () => {
               username={photo.user.displayName}
               title={photo.title}
               image={photo.image}
-              onClick={() => null}
               user={user}
               onDelete={() => handleDelete(photo._id)}
               isDeleting={photoDeleting}
