@@ -16,3 +16,9 @@ export interface UserMethods {
 }
 
 export type UserModel = Model<UserFields, {}, UserMethods>
+
+export interface PhotoFields {
+  user: string;
+  title: string;
+  image: string | null;
+}
