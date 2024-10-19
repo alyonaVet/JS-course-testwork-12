@@ -21,6 +21,7 @@ const App = () => {
       </header>
       <Routes>
         <Route path="/" element={<MainPagePhotos/>}/>
+        <Route path="/author/:authorId" element={<MainPagePhotos/>}/>
         <Route path="/photos/add-photo" element={
           <ProtectedRoute isAllowed={!!user}>
             <AddPhoto/>
