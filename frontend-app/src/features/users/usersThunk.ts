@@ -68,3 +68,11 @@ export const googleLogin = createAsyncThunk<User, string, { rejectValue: GlobalE
     }
   },
 );
+
+export const getUser = createAsyncThunk<User, string | undefined>(
+  'users/getUser',
+  async (id) => {
+    const {data: user} = await axiosApi.get(`/users/${id}`);
+    return user;
+  }
+);
