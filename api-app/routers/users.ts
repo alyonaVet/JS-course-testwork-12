@@ -57,6 +57,25 @@ usersRouter.post('/sessions', async (req, res, next) => {
   }
 });
 
+usersRouter.get('/:id', async (req, res, next) => {
+  try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(400).send({error: 'User ID is not valid'});
+    }
+
+    const user = await User.findById(req.params.id);
+
+    if (user === null) {
+      return res.status(404).send({error: 'User not found'});
+    }
+
+    return res.send(user);
+
+  } catch (error) {
+    return next(error);
+  }
+});
+
 usersRouter.post('/google', async (req, res, next) => {
   try {
     const ticket = await googleClient.verifyIdToken({
