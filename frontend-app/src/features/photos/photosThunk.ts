@@ -42,3 +42,17 @@ export const fetchOneUserPhotos = createAsyncThunk<Photo[]>(
     return userPhotos;
   }
 );
+
+export const deletePhoto = createAsyncThunk<void, string, { rejectValue: GlobalError }>(
+  'photos/deletePhoto',
+  async (id, {rejectWithValue}) => {
+    try {
+      await axiosApi.delete(`photos/${id}`);
+    } catch (error) {
+      if (isAxiosError(error) && error.response && error.response.status === 400) {
+        return rejectWithValue(error.response.data);
+      }
+      throw error;
+    }
+  }
+);
