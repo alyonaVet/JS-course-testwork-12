@@ -4,10 +4,11 @@ import axiosApi from '../../axiosApi';
 import {RootState} from '../../app/store';
 import {isAxiosError} from 'axios';
 
-export const fetchPhotos = createAsyncThunk<Photo[]>(
+export const fetchPhotos = createAsyncThunk<Photo[], string | undefined>(
   'photos/fetchPhotos',
-  async () => {
-    const {data: photos} = await axiosApi.get<Photo[]>('/photos');
+  async (authorId) => {
+    const reqUrl = authorId ? `/photos?authorId=${authorId}` : '/photos'
+    const {data: photos} = await axiosApi.get<Photo[]>(reqUrl);
     return photos;
   }
 );
