@@ -15,6 +15,7 @@ import {apiURL} from '../../../constants';
 import {User} from '../../../types';
 import {LoadingButton} from '@mui/lab';
 import CloseIcon from '@mui/icons-material/Close';
+import {Link, useParams} from 'react-router-dom';
 
 const BootstrapDialog = styled(Dialog)(({theme}) => ({
   '& .MuiDialogContent-root': {
@@ -28,7 +29,7 @@ const BootstrapDialog = styled(Dialog)(({theme}) => ({
 interface Props {
   id: string;
   user: User | null;
-  authorId: string;
+  photoAuthorId: string;
   username: string;
   title: string;
   image: string | null;
@@ -38,13 +39,15 @@ interface Props {
 
 const PhotoCard: React.FC<Props> = ({
                                       user,
-                                      authorId,
+                                      photoAuthorId,
                                       username,
                                       title,
                                       image,
                                       onDelete,
                                       isDeleting
                                     }) => {
+  const {authorId} = useParams();
+
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -66,7 +69,7 @@ const PhotoCard: React.FC<Props> = ({
   return (
     <>
       <Box sx={{mt: 3}}>
-        {user && (user.role === 'admin' || user._id === authorId) &&
+        {user && (user.role === 'admin' || user._id === photoAuthorId) &&
           (<Stack direction="row" justifyContent="space-between" mb={2}>
               <LoadingButton
                 type="submit"
@@ -100,9 +103,13 @@ const PhotoCard: React.FC<Props> = ({
               <Typography gutterBottom variant="h5" component="div" textAlign="center">
                 {title}
               </Typography>
-              <Typography gutterBottom variant="h5" component="div" textAlign="center">
-                by {username}
-              </Typography>
+              {
+                !authorId &&
+                <Typography gutterBottom variant="h5" component="div" textAlign="center">
+                  by <Link to={`/author/${photoAuthorId}`}>{username}</Link>
+                </Typography>
+              }
+
             </CardContent>
           </CardActionArea>
         </Card>
@@ -125,7 +132,7 @@ const PhotoCard: React.FC<Props> = ({
           <CloseIcon/>
         </IconButton>
         <DialogContent>
-          <img src={cardImage} alt={title}  style={{ width: "80vh" }} />
+          <img src={cardImage} alt={title} style={{width: '80vh'}}/>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose}>
