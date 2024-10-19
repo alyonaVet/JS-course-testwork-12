@@ -34,3 +34,19 @@ export interface ValidationError {
 export interface GlobalError {
   error: string;
 }
+
+export interface PhotoFields {
+  user: string;
+  title: string;
+  image: string | null;
+}
+
+export interface Photo {
+  _id: string;
+  user: {
+    _id: string;
+    displayName: string;
+  };
+  title: string;
+  image: string | null;
+}
